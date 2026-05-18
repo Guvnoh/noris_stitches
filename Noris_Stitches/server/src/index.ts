@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
 import Product from "./models/Products";
-import router from "./routes";
+import router from "./routes/productRoutes";
 
 dotenv.config();
 
