@@ -3,7 +3,7 @@ import { type Outfit } from "../assets/data";
 
 const API_URL =
   import.meta.env.VITE_API_URL ||
-  "https://norisstitches-production.up.railway.app/products";
+  "https://norisstitches-production.up.railway.app";
 
 const getProducts = async () => {
   const response = await axios.get(`${API_URL}/products`);
