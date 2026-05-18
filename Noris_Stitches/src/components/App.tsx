@@ -20,7 +20,7 @@ import { useState } from "react";
 import Header from "./Header";
 import Banner from "./Banner";
 import Catalogue from "./Catalogue";
-import ProductDetails from "./productDetails";
+import ProductDetails from "./ProductDetails";
 import { type Outfit } from "../assets/data";
 
 function App() {
