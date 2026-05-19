@@ -16,30 +16,46 @@
 
 // export default App;
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Routes, Route } from "react-router-dom";
 import Header from "./Header";
 import Banner from "./Banner";
 import Catalogue from "./Catalogue";
 import ProductDetails from "./ProductDetails";
-import { type Outfit } from "../assets/data";
+import { getProducts } from "../tools/db_interface";
+import { outfits, type Outfit } from "../assets/data";
 
 function App() {
-  const [selectedProduct, setSelectedProduct] = useState<Outfit | null>(null);
+  const [products, setProducts] = useState<Outfit[]>([]);
+
+  useEffect(() => {
+    const loadProducts = async () => {
+      const data = await getProducts();
+      if (data) setProducts(data);
+    };
+    loadProducts();
+  }, []);
+
+  const displayProducts = products.length ? products : outfits;
 
   return (
     <div className="App">
       <Header />
-      {selectedProduct ? (
-        <ProductDetails
-          product={selectedProduct}
-          onBack={() => setSelectedProduct(null)}
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <>
+              <Banner />
+              <Catalogue products={displayProducts} />
+            </>
+          }
         />
-      ) : (
-        <>
-          <Banner />
-          <Catalogue onProductClick={setSelectedProduct} />
-        </>
-      )}
+        <Route
+          path="/product/:id"
+          element={<ProductDetails products={displayProducts} />}
+        />
+      </Routes>
     </div>
   );
 }

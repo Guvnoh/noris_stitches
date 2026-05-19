@@ -4,3 +4,7 @@
   --font-body: "Montserrat", sans-serif;
   --font-heading: "Playfair Display", serif;
 }
+
+html {
+  scroll-behavior: smooth;
+}

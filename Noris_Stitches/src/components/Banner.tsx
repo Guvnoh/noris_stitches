@@ -21,9 +21,12 @@ export default function Banner() {
           Modern Nigerian fashion, rooted in culture and crafted for confidence.
         </p>
 
-        <button className="mt-8 px-8 py-3 bg-yellow-400 text-black font-semibold tracking-wide hover:bg-yellow-300 transition rounded-sm">
+        <a
+          href="#catalogue"
+          className="mt-8 px-8 py-3 bg-yellow-400 text-black font-semibold tracking-wide hover:bg-yellow-300 transition rounded-sm inline-block"
+        >
           Explore Collection
-        </button>
+        </a>
       </div>
     </section>
   );

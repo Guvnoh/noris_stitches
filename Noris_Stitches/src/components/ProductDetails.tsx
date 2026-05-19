@@ -1,9 +1,9 @@
+import { useParams, useNavigate } from "react-router-dom";
 import { type Outfit, type Sizes } from "../assets/data";
 import { formatNumber } from "../tools/formatters";
 
 interface ProductDetailsProps {
-  product: Outfit;
-  onBack: () => void;
+  products: Outfit[];
 }
 
 const SIZE_LABELS: Record<keyof Sizes, string> = {
@@ -14,10 +14,34 @@ const SIZE_LABELS: Record<keyof Sizes, string> = {
   xxl: "XXL",
 };
 
-export default function ProductDetails({
-  product,
-  onBack,
-}: ProductDetailsProps) {
+export default function ProductDetails({ products }: ProductDetailsProps) {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const product = products.find((p) => p._id === id);
+
+  if (!product) {
+    return (
+      <div
+        style={{
+          background: "#F7F2EA",
+          minHeight: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <p
+          style={{
+            fontFamily: "var(--font-body)",
+            color: "rgba(13,11,9,0.45)",
+          }}
+        >
+          Product not found.
+        </p>
+      </div>
+    );
+  }
+
   const sizeEntries = Object.entries(product.sizes) as [keyof Sizes, string][];
   const hasAnyStock = sizeEntries.some(([, qty]) => parseInt(qty) > 0);
 
@@ -29,7 +53,7 @@ export default function ProductDetails({
         style={{ borderBottom: "1px solid rgba(13,11,9,0.08)" }}
       >
         <button
-          onClick={onBack}
+          onClick={() => navigate(-1)}
           className="flex items-center gap-2 text-xs uppercase tracking-[0.3em] transition-all duration-200"
           style={{
             fontFamily: "var(--font-body)",
@@ -332,10 +356,10 @@ export default function ProductDetails({
               }}
             >
               Every piece from Nori's Stitches is handcrafted to order using
-              premium fabrics sourced locally and abroad. This{" "}
-              {product.category.toLowerCase()} is tailored to your measurements
-              for a perfect fit, blending contemporary silhouettes with the rich
-              heritage of Nigerian textile tradition.
+              premium fabrics sourced locally and abroad. This outfit is
+              tailored to your measurements for a perfect fit, blending
+              contemporary silhouettes with the rich heritage of Nigerian
+              textile tradition.
             </p>
           </div>
 
@@ -353,7 +377,7 @@ export default function ProductDetails({
 
           {/* CTAs */}
           <a
-            href={`mailto:hello@norisstitches.com?subject=Order Enquiry – ${encodeURIComponent(product.name)}&body=Hi Nori, I'm interested in ordering the ${encodeURIComponent(product.name)}. Please let me know about next steps. Thank you!`}
+            href={`https://wa.me/2347010009979?text=${encodeURIComponent(`Hi Nori, I'd like to order the ${product.name}`)}`}
             style={{
               fontFamily: "var(--font-body)",
               background: "#0D0B09",
@@ -381,7 +405,7 @@ export default function ProductDetails({
           </a>
 
           <a
-            href={`https://wa.me/?text=${encodeURIComponent(`Hi Nori, I'd like to order the ${product.name}`)}`}
+            href={`https://wa.me/2347010009979?text=${encodeURIComponent(`Hi Nori, I'd like to order the ${product.name}`)}`}
             style={{
               fontFamily: "var(--font-body)",
               background: "transparent",

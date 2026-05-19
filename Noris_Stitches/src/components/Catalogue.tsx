@@ -254,40 +254,26 @@
 //   );
 // }
 
-import { outfits, type Outfit } from "../assets/data";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { formatNumber } from "../tools/formatters";
-import { getProducts } from "../tools/db_interface";
-import { useEffect } from "react";
 import { SortSelect } from "./sortComponent";
+import { type Outfit } from "../assets/data";
 
 interface CatalogueProps {
-  onProductClick: (product: Outfit) => void;
+  products: Outfit[];
 }
 
-export default function Catalogue({ onProductClick }: CatalogueProps) {
-  const [products, setProducts] = useState<Outfit[]>([]);
+export default function Catalogue({ products }: CatalogueProps) {
   const [selectedCategory] = useState("All");
   const [sortOption, setSortOption] = useState("default");
 
-  useEffect(() => {
-    const loadProducts = async () => {
-      const data = await getProducts();
-      if (data) setProducts(data);
-    };
-    loadProducts();
-  }, []);
-
-  const filteredBase =
+  const filtered =
     selectedCategory === "All"
-      ? products.length
-        ? products
-        : outfits
-      : products.length
-        ? products.filter((o) => o.category === selectedCategory)
-        : outfits.filter((o) => o.category === selectedCategory);
+      ? [...products]
+      : products.filter((o) => o.category === selectedCategory);
 
-  const filtered = [...filteredBase].sort((a, b) => {
+  const sorted = [...filtered].sort((a, b) => {
     switch (sortOption) {
       case "low-high":
         return a.price - b.price;
@@ -305,6 +291,7 @@ export default function Catalogue({ onProductClick }: CatalogueProps) {
   return (
     <section
       id="catalogue"
+      className="scroll-mt-24"
       style={{
         background: "#F7F2EA",
         paddingTop: "96px",
@@ -369,13 +356,8 @@ export default function Catalogue({ onProductClick }: CatalogueProps) {
           gap: "20px",
         }}
       >
-        {filtered.map((outfit, i) => (
-          <OutfitCard
-            outfit={outfit}
-            key={i}
-            index={i}
-            onProductClick={onProductClick}
-          />
+        {sorted.map((outfit, i) => (
+          <OutfitCard outfit={outfit} key={i} index={i} />
         ))}
       </div>
 
@@ -388,7 +370,7 @@ export default function Catalogue({ onProductClick }: CatalogueProps) {
           All pieces made to order · 7–14 day delivery
         </p>
         <a
-          href="mailto:hello@norisstitches.com"
+          href={`https://wa.me/2347010009979?text=${encodeURIComponent(`Hi Nori, I'd like to enquire about `)}`}
           className="inline-block text-xs tracking-[0.3em] uppercase px-10 py-4 transition-all duration-300"
           style={{
             fontFamily: "var(--font-body)",
@@ -413,15 +395,8 @@ export default function Catalogue({ onProductClick }: CatalogueProps) {
   );
 }
 
-function OutfitCard({
-  outfit,
-  index,
-  onProductClick,
-}: {
-  outfit: Outfit;
-  index: number;
-  onProductClick: (product: Outfit) => void;
-}) {
+function OutfitCard({ outfit, index }: { outfit: Outfit; index: number }) {
+  const navigate = useNavigate();
   const isFeature = index === 3;
 
   return (
@@ -432,7 +407,7 @@ function OutfitCard({
         background: "#1A1410",
         gridRow: isFeature ? "span 1" : undefined,
       }}
-      onClick={() => onProductClick(outfit)}
+      onClick={() => navigate(`/product/${outfit._id}`)}
     >
       {/* Product image */}
       <img

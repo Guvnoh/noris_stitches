@@ -35,15 +35,19 @@
 //   );
 // }
 
+import { useState } from "react";
 import "../index.css";
 
 export default function Header() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const close = () => setMenuOpen(false);
+
   return (
     <header className="sticky top-0 z-50 backdrop-blur-md bg-black/70 border-b border-white/10">
       <nav className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4 font-body">
         {/* Logo */}
         <h1 className="text-2xl md:text-3xl font-heading tracking-wide text-white">
-          Nori’s <span className="text-yellow-400">Stitches</span>
+          Nori's <span className="text-yellow-400">Stitches</span>
         </h1>
 
         {/* Desktop Nav */}
@@ -60,12 +64,63 @@ export default function Header() {
         </div>
 
         {/* Mobile Hamburger */}
-        <button className="md:hidden flex flex-col space-y-1">
-          <span className="w-6 h-[2px] bg-white"></span>
-          <span className="w-6 h-[2px] bg-white"></span>
-          <span className="w-6 h-[2px] bg-white"></span>
+        <button
+          className="md:hidden flex flex-col space-y-1 z-50"
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-label="Toggle menu"
+        >
+          <span
+            className={`w-6 h-[2px] bg-white transition-transform ${
+              menuOpen ? "rotate-45 translate-y-[3px]" : ""
+            }`}
+          />
+          <span
+            className={`w-6 h-[2px] bg-white transition-opacity ${
+              menuOpen ? "opacity-0" : ""
+            }`}
+          />
+          <span
+            className={`w-6 h-[2px] bg-white transition-transform ${
+              menuOpen ? "-rotate-45 -translate-y-[3px]" : ""
+            }`}
+          />
         </button>
       </nav>
+
+      {/* Mobile Menu Panel */}
+      {menuOpen && (
+        <>
+          <div
+            className="fixed inset-0 bg-black/50 z-30"
+            onClick={close}
+          />
+          <div className="fixed top-0 right-0 h-full w-64 bg-black/95 backdrop-blur-md z-40 p-6 shadow-2xl">
+            <div className="mt-24 flex flex-col space-y-8">
+              <a
+                href="#catalogue"
+                onClick={close}
+                className="text-gray-200 hover:text-yellow-400 transition uppercase tracking-wider text-sm"
+              >
+                Catalogue
+              </a>
+              <a
+                href="#about"
+                onClick={close}
+                className="text-gray-200 hover:text-yellow-400 transition uppercase tracking-wider text-sm"
+              >
+                About
+              </a>
+              <a
+                href="#contact"
+                onClick={close}
+                className="text-gray-200 hover:text-yellow-400 transition uppercase tracking-wider text-sm"
+              >
+                Contact
+              </a>
+            </div>
+          </div>
+        </>
+      )}
     </header>
   );
 }
