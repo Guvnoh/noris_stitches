@@ -17,13 +17,21 @@
 // export default App;
 
 import { useState, useEffect } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import Header from "./Header";
 import Banner from "./Banner";
 import Catalogue from "./Catalogue";
 import ProductDetails from "./ProductDetails";
 import { getProducts } from "../tools/db_interface";
 import { outfits, type Outfit } from "../assets/data";
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+}
 
 function App() {
   const [products, setProducts] = useState<Outfit[]>([]);
@@ -41,6 +49,7 @@ function App() {
   return (
     <div className="App">
       <Header />
+      <ScrollToTop />
       <Routes>
         <Route
           path="/"
