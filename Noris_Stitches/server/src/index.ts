@@ -9,14 +9,16 @@ dotenv.config();
 
 const app = express();
 
-app.use(cors({
-  origin: [
-    "https://noris-stitches.vercel.app",
-    "http://localhost:5173",
-    "http://localhost:4173",
-  ],
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: [
+      "https://noris-stitches.vercel.app",
+      "http://localhost:5173",
+      "http://localhost:4173",
+    ],
+    credentials: true,
+  }),
+);
 app.use(express.json());
 
 const PORT = process.env.PORT || 5000;
@@ -36,7 +38,7 @@ app.get("/debug", async (_req, res) => {
   }
 });
 
-app.use("/products", productRouter);
+app.use("/", productRouter);
 app.use("/auth", authRouter);
 
 async function startServer() {
