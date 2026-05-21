@@ -4,6 +4,8 @@ import cors from "cors";
 import dotenv from "dotenv";
 import productRouter from "./routes/productRoutes";
 import authRouter from "./routes/authRoutes";
+import bcrypt from "bcryptjs";
+import Admin from "./models/Admin";
 
 dotenv.config();
 
@@ -41,6 +43,17 @@ app.get("/debug", async (_req, res) => {
 app.use("/products", productRouter);
 app.use("/auth", authRouter);
 
+async function seedAdmin() {
+  const email = process.env.ADMIN_EMAIL || "admin@norisstitches.com";
+  const password = process.env.ADMIN_PASSWORD || "admin123";
+
+  const exists = await Admin.findOne({ email });
+  if (exists) return;
+
+  await Admin.create({ email, password });
+  console.log(`Admin seeded: ${email}`);
+}
+
 async function startServer() {
   try {
     await mongoose.connect(process.env.MONGO_URI as string, {
@@ -48,6 +61,8 @@ async function startServer() {
     });
 
     console.log("MongoDB Connected");
+
+    await seedAdmin();
 
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
