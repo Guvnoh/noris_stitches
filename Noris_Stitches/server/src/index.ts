@@ -2,7 +2,8 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
-import router from "./routes/productRoutes";
+import productRouter from "./routes/productRoutes";
+import authRouter from "./routes/authRoutes";
 
 dotenv.config();
 
@@ -13,12 +14,10 @@ app.use(express.json());
 
 const PORT = process.env.PORT || 5000;
 
-// Health check
 app.get("/", (_req, res) => {
   res.json({ status: "ok" });
 });
 
-// DEBUG route (raw MongoDB access)
 app.get("/debug", async (_req, res) => {
   try {
     const db = mongoose.connection.db;
@@ -34,10 +33,9 @@ app.get("/debug", async (_req, res) => {
   }
 });
 
-// Product routes
-app.use("/products", router);
+app.use("/products", productRouter);
+app.use("/auth", authRouter);
 
-// Connect DB first, then start server
 async function startServer() {
   try {
     await mongoose.connect(process.env.MONGO_URI as string, {

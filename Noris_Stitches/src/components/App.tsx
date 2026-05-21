@@ -1,27 +1,17 @@
-// import Header from "./Header";
-// import Banner from "./Banner";
-// import Catalogue from "./Catalogue";
-
-// function App() {
-//   return (
-//     <div className="App">
-//       <div>
-//         <Header />
-//         <Banner />
-//       </div>
-//       <Catalogue />
-//     </div>
-//   );
-// }
-
-// export default App;
-
 import { useState, useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import Header from "./Header";
+import Footer from "./Footer";
 import Banner from "./Banner";
 import Catalogue from "./Catalogue";
 import ProductDetails from "./ProductDetails";
+import About from "./About";
+import Contact from "./Contact";
+import AdminLogin from "./AdminLogin";
+import AdminDashboard from "./AdminDashboard";
+import AdminEditProduct from "./AdminEditProduct";
+import ProtectedRoute from "./ProtectedRoute";
+import { AuthProvider } from "../context/AuthContext";
 import { getProducts } from "../tools/db_interface";
 import { outfits, type Outfit } from "../assets/data";
 
@@ -45,27 +35,51 @@ function App() {
   }, []);
 
   const displayProducts = products.length ? products : outfits;
+  const { pathname } = useLocation();
+  const isAdmin = pathname.startsWith("/admin");
 
   return (
-    <div className="App">
-      <Header />
-      <ScrollToTop />
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <>
-              <Banner />
-              <Catalogue products={displayProducts} />
-            </>
-          }
-        />
-        <Route
-          path="/product/:id"
-          element={<ProductDetails products={displayProducts} />}
-        />
-      </Routes>
-    </div>
+    <AuthProvider>
+      <div className="App">
+        <Header />
+        <ScrollToTop />
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <>
+                <Banner />
+                <Catalogue products={displayProducts} />
+              </>
+            }
+          />
+          <Route
+            path="/product/:id"
+            element={<ProductDetails products={displayProducts} />}
+          />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute>
+                <AdminDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/edit/:id"
+            element={
+              <ProtectedRoute>
+                <AdminEditProduct />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+        {!isAdmin && <Footer />}
+      </div>
+    </AuthProvider>
   );
 }
 

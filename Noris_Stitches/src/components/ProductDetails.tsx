@@ -132,14 +132,14 @@ export default function ProductDetails({ products }: ProductDetailsProps) {
         {/* ── Details panel ── */}
         <div style={{ paddingTop: "8px" }}>
           {/* Category breadcrumb */}
-          <p
+          {/* <p
             className="text-xs tracking-[0.4em] uppercase mb-4"
             style={{ fontFamily: "var(--font-body)", color: "#B55934" }}
           >
             {product.category}
-          </p>
+          </p> */}
 
-          {/* Name */}
+          {/* Name
           <h1
             className="font-bold leading-none mb-6"
             style={{
@@ -150,10 +150,10 @@ export default function ProductDetails({ products }: ProductDetailsProps) {
             }}
           >
             {product.name}
-          </h1>
+          </h1> */}
 
           {/* Ornamental divider */}
-          <div className="flex items-center gap-4 mb-8">
+          {/* <div className="flex items-center gap-4 mb-8">
             <div
               style={{ height: "1px", width: "40px", background: "#C9A84C" }}
             />
@@ -168,7 +168,7 @@ export default function ProductDetails({ products }: ProductDetailsProps) {
             <div
               style={{ height: "1px", width: "40px", background: "#C9A84C" }}
             />
-          </div>
+          </div> */}
 
           {/* Price */}
           <p
@@ -264,7 +264,7 @@ export default function ProductDetails({ products }: ProductDetailsProps) {
                         letterSpacing: "0.05em",
                       }}
                     >
-                      {inStock ? `${qty} left` : "Sold out"}
+                      {inStock ? `${stock} left` : "Sold out"}
                     </span>
                   </div>
                 );
