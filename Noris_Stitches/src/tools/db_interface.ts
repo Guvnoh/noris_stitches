@@ -35,32 +35,32 @@ export const loginAdmin = async (email: string, password: string) => {
 };
 
 export const getProducts = async () => {
-  const response = await api.get("/products");
+  const response = await api.get("/");
   return response.data;
 };
 
 export const getProduct = async (id: string) => {
-  const res = await api.get(`/products/${id}`);
+  const res = await api.get(`/${id}`);
   return res.data;
 };
 
 export const createProduct = async (formData: FormData) => {
-  const res = await api.post("/products", formData);
+  const res = await api.post("/", formData);
   return res.data;
 };
 
 export const updateProduct = async (id: string, formData: FormData) => {
-  const res = await api.put(`/products/${id}`, formData);
+  const res = await api.put(`/${id}`, formData);
   return res.data;
 };
 
 export const getCategories = async () => {
-  const res = await api.get("/products/categories");
+  const res = await api.get("/categories");
   return res.data as string[];
 };
 
 export const deleteProduct = async (id: string) => {
-  const res = await api.delete(`/products/${id}`);
+  const res = await api.delete(`/${id}`);
   return res.data;
 };
 

@@ -38,7 +38,7 @@ app.get("/debug", async (_req, res) => {
   }
 });
 
-app.use("/", productRouter);
+app.use("/products", productRouter);
 app.use("/auth", authRouter);
 
 async function startServer() {
