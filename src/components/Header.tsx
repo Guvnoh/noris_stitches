@@ -4,9 +4,10 @@ import "../index.css";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
 
   const close = () => setMenuOpen(false);
+  const isActive = (p: string) => pathname === p && !hash;
 
   useEffect(() => {
     close();
@@ -30,25 +31,26 @@ export default function Header() {
           <div className="hidden md:flex items-center space-x-10 text-sm uppercase tracking-wider text-gray-200">
             <Link
               to="/"
-              className="hover:text-yellow-400 transition no-underline text-gray-200"
+              onClick={() => window.scrollTo(0, 0)}
+              className={`hover:text-yellow-400 transition no-underline ${isActive("/") ? "text-yellow-400" : "text-gray-200"}`}
             >
               Home
             </Link>
             <a
               href="/#catalogue"
-              className="hover:text-yellow-400 transition no-underline text-gray-200"
+              className={`hover:text-yellow-400 transition no-underline ${hash === "#catalogue" ? "text-yellow-400" : "text-gray-200"}`}
             >
               Catalogue
             </a>
             <Link
               to="/about"
-              className="hover:text-yellow-400 transition no-underline text-gray-200"
+              className={`hover:text-yellow-400 transition no-underline ${isActive("/about") ? "text-yellow-400" : "text-gray-200"}`}
             >
               About
             </Link>
             <Link
               to="/contact"
-              className="hover:text-yellow-400 transition no-underline text-gray-200"
+              className={`hover:text-yellow-400 transition no-underline ${isActive("/contact") ? "text-yellow-400" : "text-gray-200"}`}
             >
               Contact
             </Link>
@@ -113,29 +115,29 @@ export default function Header() {
         <div className="mt-24 flex flex-col space-y-6">
           <Link
             to="/"
-            onClick={close}
-            className="text-gray-200 hover:text-yellow-400 transition uppercase tracking-wider text-sm no-underline"
+            onClick={() => { close(); window.scrollTo(0, 0); }}
+            className={`${isActive("/") ? "text-yellow-400" : "text-gray-200"} hover:text-yellow-400 transition uppercase tracking-wider text-sm no-underline`}
           >
             Home
           </Link>
           <a
             href="/#catalogue"
             onClick={close}
-            className="text-gray-200 hover:text-yellow-400 transition uppercase tracking-wider text-sm no-underline"
+            className={`${hash === "#catalogue" ? "text-yellow-400" : "text-gray-200"} hover:text-yellow-400 transition uppercase tracking-wider text-sm no-underline`}
           >
             Catalogue
           </a>
           <Link
             to="/about"
             onClick={close}
-            className="text-gray-200 hover:text-yellow-400 transition uppercase tracking-wider text-sm no-underline"
+            className={`${isActive("/about") ? "text-yellow-400" : "text-gray-200"} hover:text-yellow-400 transition uppercase tracking-wider text-sm no-underline`}
           >
             About
           </Link>
           <Link
             to="/contact"
             onClick={close}
-            className="text-gray-200 hover:text-yellow-400 transition uppercase tracking-wider text-sm no-underline"
+            className={`${isActive("/contact") ? "text-yellow-400" : "text-gray-200"} hover:text-yellow-400 transition uppercase tracking-wider text-sm no-underline`}
           >
             Contact
           </Link>

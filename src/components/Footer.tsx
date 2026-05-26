@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export default function Footer() {
   return (
     <footer
@@ -44,10 +46,14 @@ export default function Footer() {
               Quick Links
             </p>
             <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-              {["Catalogue", "About", "Contact"].map((link) => (
-                <a
-                  key={link}
-                  href={`#${link.toLowerCase()}`}
+              {[
+                { name: "Catalogue", to: "/#catalogue" },
+                { name: "About", to: "/about" },
+                { name: "Contact", to: "/contact" },
+              ].map((link) => (
+                <Link
+                  key={link.name}
+                  to={link.to}
                   style={{
                     color: "rgba(242,234,217,0.6)",
                     textDecoration: "none",
@@ -61,8 +67,8 @@ export default function Footer() {
                     (e.currentTarget as HTMLElement).style.color = "rgba(242,234,217,0.6)";
                   }}
                 >
-                  {link}
-                </a>
+                  {link.name}
+                </Link>
               ))}
             </div>
           </div>
